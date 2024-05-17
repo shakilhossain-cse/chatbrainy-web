@@ -12,7 +12,13 @@ interface IResetPasswordData {
   confirm_password: string;
 }
 
-export const loginService = async (data: ILoginData): Promise<{
+export const loginUserService = async (): Promise<IUser> => {
+  return HttpClient.get("/users/me");
+};
+
+export const loginService = async (
+  data: ILoginData
+): Promise<{
   user: IUser;
   token: string;
 }> => {
@@ -33,6 +39,8 @@ export const forgetPasswordService = async (data: {
   return HttpClient.post("/auth/forget-password", data);
 };
 
-export const resetPasswordService = async (data: IResetPasswordData): Promise<any> => {
+export const resetPasswordService = async (
+  data: IResetPasswordData
+): Promise<any> => {
   return HttpClient.post(`/auth/reset-password?token=${data.token}`, data);
 };

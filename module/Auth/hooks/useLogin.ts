@@ -4,13 +4,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginService } from "../service/auth.service";
-import { useDispatch } from "react-redux";
-import { login } from "../authSlice";
-import { useRouter } from 'next/navigation'
+import { setUserData } from "../authSlice";
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAppDispatch } from "@/store/hooks";
 
 const useLogin = () => {
   const router = useRouter();
+  const searchParams = useSearchParams()
   const dispatch = useAppDispatch()
   const {
     isPending,
@@ -52,14 +52,13 @@ const useLogin = () => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       await mutateAsync(data);
-      console.log("login data is here", loginData);
       if (loginData) {
-        dispatch(login(loginData.user));
+        dispatch(setUserData(loginData.user));
         toast({
           title: "Login Successful",
         });
-        router.push(`/`);
-        // router.push('/')
+        const redirectTo = searchParams.get('redirectTo') || '/dashboard';
+        router.push(redirectTo);
       } else {
         console.error("Login data is undefined");
       }

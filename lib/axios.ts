@@ -5,6 +5,7 @@ export const HttpClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 5000,
   headers: { Accept: "application/json" },
+  withCredentials: true,
 });
 
 HttpClient.interceptors.response.use(

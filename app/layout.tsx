@@ -1,8 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Provider } from "@/components/provider/provider";
+import dynamic from "next/dynamic";
 
+const ReduxProvider = dynamic(
+  () => import("@/components/provider/redux-provider"),
+  {
+    ssr: false,
+  }
+);
+const RootProvider = dynamic(
+  () => import("@/components/provider/root-provider"),
+  {
+    ssr: false,
+  }
+);
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,14 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Provider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </Provider>
+        <ReduxProvider>
+          <RootProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </RootProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

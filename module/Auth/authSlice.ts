@@ -11,19 +11,19 @@ const initialState: IUser = {
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: "authUser",
   initialState,
   reducers: {
-    login: (_state, action: PayloadAction<IUser>) => {
+    setUserData: (_state, action: PayloadAction<IUser>) => {
       return action.payload;
     },
-    logout: (state) => {
-      state = initialState;
+    logout: (_state) => {
+      return initialState;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout } = authSlice.actions;
+export const { setUserData, logout } = authSlice.actions;
 
 export default authSlice.reducer;
