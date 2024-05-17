@@ -1,15 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isAuthenticated } from "./lib/auth";
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get("access_token");
-  const isAuth = Boolean(token);
+  const isAuth = isAuthenticated(request);
 
   // Define paths that are restricted for authenticated users
   const restrictedPathsForAuthUsers = [
     "/login",
     "/register",
     "/forgot-password",
+    "/reset-password",
   ];
 
   // Define paths that are restricted for unauthenticated users
@@ -47,7 +48,7 @@ export const config = {
     "/login",
     "/register",
     "/forgot-password",
-    "/about/:path*",
+    "/reset-password",
     "/dashboard/:path*",
   ],
 };

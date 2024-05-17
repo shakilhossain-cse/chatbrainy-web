@@ -1,21 +1,24 @@
 "use client";
 
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
+import { logout } from "./Auth/authSlice";
 
 const User = () => {
   const authUser = useAppSelector(state => state.auth)
+  const dispatch = useAppDispatch();
   console.log("🚀 ~ User ~ authUser:", authUser)
   if (!authUser.id) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <main className="flex  flex-col items-center justify-between p-24">
         Your not logged in <Link href={'/login'}>Login</Link>
       </main>
     );
   }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex  flex-col items-center justify-between p-24">
       Hi {authUser.first_name} {authUser.last_name}
+      <button onClick={() => dispatch(logout())}>Logout</button>
     </main>
   );
 };
