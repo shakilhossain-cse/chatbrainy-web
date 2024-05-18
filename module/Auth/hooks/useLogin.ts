@@ -5,19 +5,23 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginService } from "../service/auth.service";
 import { setUserData } from "../authSlice";
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
 
 const useLogin = () => {
   const router = useRouter();
-  const searchParams = useSearchParams()
-  const dispatch = useAppDispatch()
-  const {
-    isPending,
-    mutateAsync,
-    data: loginData,
-  } = useMutation({
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
+  const mutation = useMutation({
     mutationFn: loginService,
+    onSuccess: (data) => {
+      dispatch(setUserData(data.user));
+      toast({
+        title: "Login Successful",
+      });
+      const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+      router.push(redirectTo);
+    },
   });
   const FormSchema = z.object({
     email: z
@@ -51,26 +55,16 @@ const useLogin = () => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      await mutateAsync(data);
-      if (loginData) {
-        dispatch(setUserData(loginData.user));
-        toast({
-          title: "Login Successful",
-        });
-        const redirectTo = searchParams.get('redirectTo') || '/dashboard';
-        router.push(redirectTo);
-      } else {
-        console.error("Login data is undefined");
-      }
+      await mutation.mutateAsync(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
   return {
     form,
     onSubmit,
-    isPending,
+    isPending: mutation.isPending,
   };
 };
 

@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { forgetPasswordService } from "../service/auth.service";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const useForgetPassword = () => {
+  const router = useRouter();
   const { isPending, mutateAsync } = useMutation({
     mutationFn: forgetPasswordService,
   });
@@ -14,16 +16,12 @@ const useForgetPassword = () => {
     email: z.string().email().min(2, {
       message: "Email must be at least 5 characters.",
     }),
-    password: z.string().min(5, {
-      message: "Password must be at least 5 characters.",
-    }),
   });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
@@ -35,6 +33,7 @@ const useForgetPassword = () => {
         description:
           "Please check your email and click on the link to reset your password",
       });
+      router.push('/login')
     } catch (error) {
       console.log(error);
     }

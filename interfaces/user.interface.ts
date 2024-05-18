@@ -6,7 +6,7 @@ interface IUser {
   role: string;
 }
 
-interface IRegisterData extends Omit<IUser, "role"> {
+interface IRegisterData extends Omit<IUser, "id" | "role"> {
   password: string;
   confirm_password: string;
 }

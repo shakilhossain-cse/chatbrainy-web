@@ -4,18 +4,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { resetPasswordService } from "../service/auth.service";
 import { toast } from "@/components/ui/use-toast";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const useResetPassword = (token: string) => {
+const useResetPassword = () => {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: resetPasswordService,
   });
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const token = searchParams.get("token");
   const FormSchema = z
     .object({
-      password: z.string().min(5, {
-        message: "Password must be at least 5 characters.",
-      }),
+      password: z
+        .string()
+        .min(5, {
+          message: "Password must be at least 5 characters.",
+        })
+        .max(50, {
+          message: "Password must not exceed 50 characters.",
+        }),
       confirm_password: z.string().min(5, {
         message: "Confirm Password must be at least 5 characters.",
       }),
@@ -34,16 +42,17 @@ const useResetPassword = (token: string) => {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (!token) return;
     try {
       await mutateAsync({ token, ...data });
       toast({
         title: "Your password has been reset",
         description:
-        "Your password has been reset. Please login with your new password",
+          "Your password has been reset. Please login with your new password",
       });
       router.push("/login");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -51,6 +60,7 @@ const useResetPassword = (token: string) => {
     form,
     onSubmit,
     isPending,
+    hasToken: !!token,
   };
 };
 

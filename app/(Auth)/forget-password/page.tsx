@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ForgetPassword from "@/module/Auth/ForgetPassword";
 
-export default function Page() {
+export default function ForgetPasswordPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-[450px]">

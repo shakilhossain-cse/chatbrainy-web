@@ -13,7 +13,7 @@ import Link from "next/link";
 import useRegister from "./hooks/useRegister";
 
 const Register = () => {
-  const {form, onSubmit} = useRegister()
+  const { form, onSubmit, isPending } = useRegister();
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-100 space-y-6">
@@ -88,8 +88,8 @@ const Register = () => {
           </Link>
           <Link href="/forget-password">Forget Password</Link>
         </div>
-        <Button type="submit" className="w-full">
-          Register
+        <Button type="submit" className="w-full" disabled={isPending}>
+         { isPending ? "Registering..." : "Register"}r
         </Button>
       </form>
     </Form>
