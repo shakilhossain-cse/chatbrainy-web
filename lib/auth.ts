@@ -1,4 +1,4 @@
-import { logout } from "@/module/Auth/authSlice";
+import { logoutUser } from "@/module/Auth/authSlice";
 import { store } from "@/store";
 import { NextRequest } from "next/server";
 
@@ -7,6 +7,6 @@ export function isAuthenticated(request: NextRequest): boolean {
   if (token) {
     return true;
   }
-  store.dispatch(logout());
+  store.dispatch(logoutUser());
   return false;
 }

@@ -33,7 +33,7 @@ export default function RootLayout({
         <ReduxProvider>
           <RootProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme="light"
             enableSystem
             disableTransitionOnChange
           >

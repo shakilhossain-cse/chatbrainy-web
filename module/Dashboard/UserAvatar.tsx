@@ -13,6 +13,7 @@ import {
   } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import useLogout from "../Auth/hooks/useLogout";
   
 
 interface Props {
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function UserAvatar({ user }: Props) {
+  const {handleLogout} = useLogout()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -27,9 +29,9 @@ export default function UserAvatar({ user }: Props) {
           <Avatar className="h-8 w-8">
             <AvatarImage
               src={user?.image as string}
-              alt={user?.name as string}
+              alt={user?.first_name as string}
             />
-            <AvatarFallback>{user?.name?.[0]}</AvatarFallback>
+            <AvatarFallback>{user?.first_name}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -51,7 +53,7 @@ export default function UserAvatar({ user }: Props) {
             <span>Dashborad</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {}}>
+        <DropdownMenuItem onClick={handleLogout}>
           <FiLogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

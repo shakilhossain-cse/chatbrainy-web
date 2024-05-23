@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import Link from "next/link";
-import { logout } from "./Auth/authSlice";
+import { logoutUser } from "./Auth/authSlice";
 
 const User = () => {
   const authUser = useAppSelector(state => state.auth)
@@ -18,7 +18,7 @@ const User = () => {
   return (
     <main className="flex  flex-col items-center justify-between p-24">
       Hi {authUser.first_name} {authUser.last_name}
-      <button onClick={() => dispatch(logout())}>Logout</button>
+      <button onClick={() => dispatch(logoutUser())}>Logout</button>
     </main>
   );
 };

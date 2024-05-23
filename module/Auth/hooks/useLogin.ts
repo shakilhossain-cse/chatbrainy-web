@@ -4,18 +4,20 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginService } from "../service/auth.service";
-import { setUserData } from "../authSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store/hooks";
+import { loginUser, logoutUser } from "../authSlice";
+import { useEffect } from "react";
 
 const useLogin = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+
   const mutation = useMutation({
     mutationFn: loginService,
     onSuccess: (data) => {
-      dispatch(setUserData(data.user));
+      dispatch(loginUser(data.user));
       toast({
         title: "Login Successful",
       });
@@ -23,6 +25,11 @@ const useLogin = () => {
       router.push(redirectTo);
     },
   });
+  
+  useEffect(() => {
+    dispatch(logoutUser());
+  }, []);
+
   const FormSchema = z.object({
     email: z
       .string()

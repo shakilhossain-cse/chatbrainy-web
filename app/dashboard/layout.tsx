@@ -4,12 +4,14 @@ import { FiHome } from "react-icons/fi";
 import Link from "next/link";
 import Sidebar from "@/module/Dashboard/Sidebar";
 import UserAvatar from "@/module/Dashboard/UserAvatar";
+import { useAppSelector } from "@/store/hooks";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const user = useAppSelector((state) => state.auth);
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <Sidebar />
@@ -20,7 +22,7 @@ export default function DashboardLayout({
             <span className="sr-only">Home</span>
           </Link>
           <div className="w-full flex-1"></div>
-          <UserAvatar user={null} />
+          <UserAvatar user={user} />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
           {children}
