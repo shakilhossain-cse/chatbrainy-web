@@ -20,18 +20,18 @@ import {
 
 const sidebarLinks = [
   {
-    label: "Overview",
-    href: "dashboard",
+    label: "Dashboard",
+    href: "/dashboard",
     icon: FiHome,
   },
   {
-    label: "Clients",
-    href: "dashboard/clients",
+    label: "Chat Widget",
+    href: "/dashboard/chat-widget",
     icon: FiUser,
   },
   {
-    label: "Projects",
-    href: "dashboard/projects",
+    label: "Messages",
+    href: "/dashboard/messages",
     icon: FiFolder,
   },
   {
@@ -83,7 +83,6 @@ export default function Sidebar() {
             <FiActivity className="h-6 w-6" />
             <span className="">ChatBrainy</span>
           </Link>
-         
         </div>
         <div className="flex-1 overflow-auto py-2">
           <nav className="grid items-start px-4 text-sm font-medium">

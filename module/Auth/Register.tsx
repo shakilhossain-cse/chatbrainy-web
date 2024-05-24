@@ -89,7 +89,7 @@ const Register = () => {
           <Link href="/forget-password">Forget Password</Link>
         </div>
         <Button type="submit" className="w-full" disabled={isPending}>
-         { isPending ? "Registering..." : "Register"}r
+         { isPending ? "Registering..." : "Register"}
         </Button>
       </form>
     </Form>
