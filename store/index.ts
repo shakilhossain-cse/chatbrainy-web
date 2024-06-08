@@ -1,6 +1,7 @@
 import authReducer from "@/module/Auth/authSlice";
 import chatWidgetReducer from "@/module/ChatWidget/chatWidgetSlice";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import messagesReducer from "@/module/Messenger/messageSlice";
+import { configureStore, combineReducers, UnknownAction } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
@@ -33,7 +34,8 @@ const persistedReducer = persistReducer(authPersistConfig, authReducer);
 
 const rootReducer = combineReducers({
   auth: persistedReducer,
-  chatWidget: chatWidgetReducer
+  chatWidget: chatWidgetReducer,
+  messages: messagesReducer,
 });
 
 export const makeStore = () => {
@@ -49,3 +51,7 @@ export const store = makeStore();
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 export type AppDispatch = AppStore["dispatch"];
+function messageReducer(state: { visitor: never[]; } | undefined, action: UnknownAction): { visitor: never[]; } {
+  throw new Error("Function not implemented.");
+}
+

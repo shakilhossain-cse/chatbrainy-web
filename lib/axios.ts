@@ -12,7 +12,7 @@ HttpClient.interceptors.response.use(
   (response) => {
     return response.data;
   },
-  (error: AxiosError) => {
+  (error: AxiosError) => {  
     if (error.response) {
       const { data } = error.response;
       const errorMessage = (data && data?.message) || "An error occurred";
