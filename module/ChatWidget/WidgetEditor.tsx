@@ -7,46 +7,142 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Form,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useAppSelector } from "@/store/hooks";
+import useChatWidget from "./hooks/useChatWidget";
 
 const WidgetEditor = () => {
-  const chatWidget = useAppSelector((state) => state.chatWidget);
+  const { form, onSubmit, isPending, onFileChange } = useChatWidget();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Chat Widget Editor</CardTitle>
       </CardHeader>
       <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" value={chatWidget.name} placeholder="Chat widget name" />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid w-full items-center gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Add widget name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Add widget description"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="website_url"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Website URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Add website URL"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="primary_color"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Primary Color</FormLabel>
+                    <FormControl>
+                      <Input type="color" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="secondary_color"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Secondary Color</FormLabel>
+                    <FormControl>
+                      <Input type="color" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormItem className="flex flex-col space-y-1.5">
+                <FormLabel>Icon</FormLabel>
+                <FormControl>
+                  <Input
+                    type="file"
+                    placeholder="Add widget icon"
+                    onChange={onFileChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col space-y-1.5">
+                    <FormLabel>Initial Message</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Add widget icon"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full">
+                Update
+              </Button>
             </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="description">Description</Label>
-              <Input id="description" placeholder="Chat widget Description" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="url">Website Url</Label>
-              <Input id="url" placeholder="Your site url" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="color">Widget Color</Label>
-              <Input id="color" type="color" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="logo">Widget Icon</Label>
-              <Input id="logo" type="file" />
-            </div>
-          </div>
-        </form>
+          </form>
+        </Form>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button className="w-full">Update</Button>
-      </CardFooter>
     </Card>
   );
 };
