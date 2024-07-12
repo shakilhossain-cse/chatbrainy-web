@@ -17,14 +17,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useChatWidget from "./hooks/useChatWidget";
+import ShowLinkModal from "./ShowLinkModal";
 
 const WidgetEditor = () => {
-  const { form, onSubmit, isPending, onFileChange } = useChatWidget();
+  const { form, onSubmit, isPending, onFileChange, widgetId, isOpenScript,handelChangeScriptModal } =
+    useChatWidget();
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Chat Widget Editor</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="w-fit">Chat Widget Editor</CardTitle>
+          {!!widgetId && (
+            <ShowLinkModal
+              widgetId={widgetId}
+              isOpenScript={isOpenScript}
+              handelChangeScriptModal={handelChangeScriptModal}
+            />
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -135,9 +146,14 @@ const WidgetEditor = () => {
                   </FormItem>
                 )}
               />
-
-              <Button type="submit" className="w-full">
-                Update
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending
+                  ? widgetId
+                    ? "Updating..."
+                    : "Creating..."
+                  : widgetId
+                  ? "Update"
+                  : "Create"}
               </Button>
             </div>
           </form>

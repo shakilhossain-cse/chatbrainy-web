@@ -6,8 +6,8 @@ import UserListSkeleton from "./UserListSkeleton";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const UserList: React.FC = () => {
-  const { data, isFetching, handelSelect } = useVisitor();
+const UserList: React.FC<{ widgetId: string }> = ({ widgetId }) => {
+  const { data, isFetching, handelSelect } = useVisitor(widgetId);
 
   if (isFetching) {
     return (

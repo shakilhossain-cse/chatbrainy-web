@@ -2,8 +2,11 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getVisitorList, getVisitorMessage } from "../service/message.service";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setMessages } from "../messageSlice";
+import { useEffect, useState } from "react";
+import { getOwnChatWidget } from "@/module/ChatWidget/service/chat-widget.service";
 
-const useVisitor = () => {
+const useVisitor = (widgetId:string) => {
+ 
   const dispatch = useAppDispatch();
   const {
     data,
@@ -15,7 +18,7 @@ const useVisitor = () => {
     status,
   } = useInfiniteQuery({
     queryKey: ["visitors"],
-    queryFn: ({ pageParam = 1 }) => getVisitorList(pageParam),
+    queryFn: ({ pageParam = 1 }) => getVisitorList(pageParam, widgetId),
     getNextPageParam: (lastPage: any) => lastPage.nextCursor,
     initialPageParam: 1,
   });

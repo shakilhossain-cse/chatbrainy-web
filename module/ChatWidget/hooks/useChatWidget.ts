@@ -9,10 +9,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IChatWidget } from "@/interfaces/chat-widget.interface";
 
 const useChatWidget = () => {
+  const [isOpenScript, setIsOpenScript] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [image, setImage] = useState<File | null>(null);
   const mutation = useMutation({
     mutationFn: updateOwnChatWidget,
     onSuccess: (data) => {
@@ -21,11 +24,23 @@ const useChatWidget = () => {
   });
   const formValues = useAppSelector((state) => state.chatWidget);
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useQuery({
-    queryKey: ["chat-widget"],
-    queryFn: getOwnChatWidget,
-  });
+  useEffect(() => {
+    setIsLoading(true);
+    getOwnChatWidget()
+      .then((data) => {
+        dispatch(loadChatWidget(data));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["chat-widget"],
+  //   queryFn: getOwnChatWidget,
+  // });
   // if (data) {
+  //   console.log(data, "data");
   //   dispatch(loadChatWidget(data));
   // }
 
@@ -40,19 +55,14 @@ const useChatWidget = () => {
       }),
     description: z
       .string()
-      .min(1, {
-        message: "Description is required.",
-      })
       .max(255, {
         message: "Description must not exceed 255 characters.",
-      }),
-    message: z.string().optional(),
-    website_url: z
-      .string()
-      .url({
-        message: "Invalid URL format.",
       })
       .optional(),
+    message: z.string().optional(),
+    website_url: z.string().url({
+      message: "Invalid URL format.",
+    }),
     primary_color: z
       .string()
       .min(1, {
@@ -69,9 +79,6 @@ const useChatWidget = () => {
       .max(50, {
         message: "Widget color must not exceed 50 characters.",
       }),
-    icon: z
-      .string()
-     .optional()
   });
 
   const form = useForm({
@@ -89,8 +96,18 @@ const useChatWidget = () => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      console.log(data);
-      // await mutation.mutateAsync(data);
+      const formData = new FormData();
+      const dataObject = data as { [key: string]: any };
+      for (const key in dataObject) {
+        if (dataObject.hasOwnProperty(key) && key !== "icon") {
+          formData.append(key, dataObject[key]);
+        }
+      }
+      if (image) {
+        formData.append("icon", image);
+      }
+      await mutation.mutateAsync(formData);
+      setIsOpenScript(true);
       toast({
         title: "Update Widget Successful",
       });
@@ -102,10 +119,15 @@ const useChatWidget = () => {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImage(file);
       const url = URL.createObjectURL(file);
-      dispatch(updateField({ key: 'icon', value: url }));
+      dispatch(updateField({ key: "icon", value: url }));
     }
   };
+
+  const handelChangeScriptModal = (data: boolean) => {
+    setIsOpenScript(data)
+  }
 
   return {
     isLoading,
@@ -113,6 +135,9 @@ const useChatWidget = () => {
     onSubmit,
     isPending: mutation.isPending,
     onFileChange,
+    widgetId: formValues?.id,
+    isOpenScript,
+    handelChangeScriptModal
   };
 };
 

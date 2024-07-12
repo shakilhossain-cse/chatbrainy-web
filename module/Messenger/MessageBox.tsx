@@ -52,26 +52,8 @@ const MessageBox = () => {
       </div>
       <div className="message-box-body">
         <div className="widget-chat-box">
-          {/* <div ref={ref}>{isFetchingNextPage ? "Loading..." : ""}</div> */}
-          {/* {messages
-                .map((item: IMessage) => (
-                  <div
-                    className={`message-bubble ${
-                      item.userId ? "message-bubble-right" : ""
-                    }`}
-                    key={item.id}
-                  >
-                    <div className="bubble-thumbs">
-                      <img src={imageUrl} alt="img" />
-                    </div>
-                    <div className="bubble-content">{item.message}</div>
-                  </div>
-                ))
-            } */}
-
           <div ref={ref}>{isFetching ? "Loading..." : ""}</div>
           {messages && messages.map((item: IMessage) => {
-            console.log("🚀 ~ {messages&&messages.map ~ item:", item)
             return(
               <div
                 className={`message-bubble ${

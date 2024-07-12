@@ -6,12 +6,13 @@ const WidgetPreview = () => {
   const { name, description, message, primary_color, secondary_color, icon } =
     useAppSelector((state) => state.chatWidget);
 
-  const imageUrl =
-    "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
   return (
     <>
-      <div id="message-box" className="message-box">
+      <div
+        id="message-box"
+        className="message-box"
+        
+      >
         <div
           className="message-box-header"
           style={{ backgroundColor: primary_color || "#000" }}
@@ -43,7 +44,9 @@ const WidgetPreview = () => {
             </button>
             <div className="profile">
               <div className="thumbs-area">
-                <Image src={icon || imageUrl} alt="image" width={30} height={30} />
+                {icon && (
+                  <Image src={icon} alt="image" width={30} height={30} />
+                )}
               </div>
               <div
                 className="content-area"
@@ -93,9 +96,7 @@ const WidgetPreview = () => {
         <div className="message-box-body">
           <div className="widget-chat-box">
             <div className="message-bubble message-bubble-right">
-              <div className="bubble-thumbs">
-                <Image src={icon || imageUrl} alt="image" width={30} height={30} />
-              </div>
+              <div className="bubble-thumbs"></div>
               <div
                 className="bubble-content"
                 style={{

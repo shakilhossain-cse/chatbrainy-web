@@ -36,14 +36,14 @@ interface IVisitorMessagesResponse {
 }
 export const getVisitorList = async (
   page: number = 1,
+  chatWidgetId: string | null,
   limit: number = 8
 ): Promise<IVisitorsResponse> => {
-  return HttpClient.get(
-    `/chat-widgets/visitors/a8e6682d-6cd3-2f12-8aa7-8fd884656490`,
-    {
-      params: { page, limit },
-    }
-  );
+  console.log("🚀 ~ chatWidgetId:", chatWidgetId);
+ return await HttpClient.get(`/chat-widgets/visitors/${chatWidgetId}`, {
+    params: { page, limit },
+  });
+
 };
 
 export const getVisitorMessage = async (
@@ -61,5 +61,6 @@ export const handelCreateSupportMessage = async (data: {
   visitorId: string;
   chatWidgetId: string;
 }) => {
-  return HttpClient.post(`/messages/support`, data);
+  const response = await HttpClient.post(`/messages/support`, data);
+  return response;
 };

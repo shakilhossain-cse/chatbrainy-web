@@ -3,13 +3,17 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { loadMessages, setNewMessage } from "../messageSlice";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
-import { getVisitorMessage, handelCreateSupportMessage } from "../service/message.service";
+import {
+  getVisitorMessage,
+  handelCreateSupportMessage,
+} from "../service/message.service";
 import { useMutation } from "@tanstack/react-query";
 import { io } from "socket.io-client";
 
 const useMessage = () => {
-  const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000";
-  const socket = io(socketUrl);
+  const socketUrl =
+    process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8000";
+   
 
   const { mutate } = useMutation({ mutationFn: handelCreateSupportMessage });
   const dispatch = useAppDispatch();
@@ -42,28 +46,34 @@ const useMessage = () => {
       fetchMessages(page);
     }
   }, [inView]);
-
+  const socket = io(socketUrl, {
+    query: {
+      chatWidgetId: chatWidgetId, // or userId if that's more appropriate
+    },
+  });
   useEffect(() => {
-    socket.on('message', (message) => {
+
+    socket.on("message", (message) => {
       console.log("New message received from server:", message);
       dispatch(setNewMessage(message));
     });
 
-    socket.on('typing', (data) => {
+    socket.on("typing", (data) => {
       console.log("User is typing:", data);
     });
 
-    socket.on('stopTyping', (data) => {
+    socket.on("stopTyping", (data) => {
       console.log("User stopped typing:", data);
     });
 
     return () => {
-      socket.off('message');
-      socket.off('typing');
-      socket.off('stopTyping');
+      socket.off("message");
+      socket.off("typing");
+      socket.off("stopTyping");
       socket.disconnect();
     };
-  }, [socket]);
+  }, []);
+
 
   const handelSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
@@ -80,16 +90,7 @@ const useMessage = () => {
 
     try {
       mutate(data);
-      const newMsgData = {
-        ...data,
-        id: Date.now().toString(),
-        messageType: "TEXT",
-        mediaUrl: null,
-        isSeen: false,
-        userId: user.id,
-        createdAt: new Date().toISOString(),
-      };
-      dispatch(setNewMessage(newMsgData));
+      
       messageInput.value = "";
     } catch (error) {
       console.error("Error sending message:", error);

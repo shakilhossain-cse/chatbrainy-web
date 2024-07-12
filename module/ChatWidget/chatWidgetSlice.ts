@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IChatWidget } from "@/interfaces/chat-widget.interface";
 
 const initialState: IChatWidget = {
+  id: "",
   name: "",
   description: "",
   website_url: "",
@@ -22,6 +23,7 @@ export const chatWidgetSlice = createSlice({
   initialState,
   reducers: {
     loadChatWidget: (state, { payload }: PayloadAction<IChatWidget>) => {
+      state.id = payload.id;
       state.name = payload.name;
       state.description = payload.description;
       state.website_url = payload.website_url;
@@ -31,6 +33,7 @@ export const chatWidgetSlice = createSlice({
       state.message = payload.message;
     },
     updateField: (state, { payload }: PayloadAction<UpdateFieldPayload>) => {
+      console.log("🚀 ~ payload:", payload);
       const { key, value } = payload;
       if (state.hasOwnProperty(key)) {
         state[key] = value;
