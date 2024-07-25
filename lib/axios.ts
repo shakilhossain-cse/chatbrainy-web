@@ -13,6 +13,7 @@ HttpClient.interceptors.response.use(
     return response.data;
   },
   (error: AxiosError) => {  
+    console.log("🚀 ~ error:", error)
     if (error.response) {
       const { data } = error.response;
       const errorMessage = (data && data?.message) || "An error occurred";

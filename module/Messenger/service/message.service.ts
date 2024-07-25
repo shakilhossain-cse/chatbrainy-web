@@ -1,24 +1,25 @@
 import { HttpClient } from "@/lib/axios";
 
-interface IVisitor {
+export interface IConversation {
   id: string;
   name: string;
   email: string | null;
   data: any | null;
+  unSeenCount: number;
   chatWidgetId: string;
   createdAt: string;
   updatedAt: string;
 }
 
-interface IVisitorsResponse {
-  visitors: IVisitor[];
+export interface IConversationResponse {
+  conversations: IConversation[];
   totalPages: number;
   currentPage: number;
 }
 
 export interface IMessage {
   id: string;
-  message: string;
+  data: string;
   messageType: "TEXT" | "IMAGE" | "VIDEO" | "AUDIO";
   mediaUrl: string | null;
   isSeen: boolean;
@@ -28,39 +29,58 @@ export interface IMessage {
   createdAt: string;
 }
 
-interface IVisitorMessagesResponse {
-  data: IMessage[];
+interface IConversationMessagesResponse {
+  messages: IMessage[];
   totalData: number;
   currentPage: string;
   totalPages: number;
 }
-export const getVisitorList = async (
+
+export const getConversation = async (
   page: number = 1,
   chatWidgetId: string | null,
   limit: number = 8
-): Promise<IVisitorsResponse> => {
-  console.log("🚀 ~ chatWidgetId:", chatWidgetId);
- return await HttpClient.get(`/chat-widgets/visitors/${chatWidgetId}`, {
+): Promise<IConversationResponse> => {
+  return await HttpClient.get(`/chat-widgets/conversation/${chatWidgetId}`, {
     params: { page, limit },
   });
-
 };
 
-export const getVisitorMessage = async (
-  visitorId: string,
+export const getConversationMessage = async (
+  conversationId: string,
   page: number = 1,
   limit: number = 10
-): Promise<IVisitorMessagesResponse> => {
-  return HttpClient.get(`/messages/${visitorId}`, {
+): Promise<IConversationMessagesResponse> => {
+  return await HttpClient.get(`/conversation/${conversationId}`, {
     params: { page, limit },
   });
 };
 
 export const handelCreateSupportMessage = async (data: {
-  message: string;
-  visitorId: string;
+  data: string;
+  type: "TEXT" | "IMAGE" | "AUDIO" | "VIDEO";
+  conversationId: string;
   chatWidgetId: string;
-}) => {
-  const response = await HttpClient.post(`/messages/support`, data);
-  return response;
+}): Promise<IMessage> => {
+  return await HttpClient.post(`/conversation/support`, data);
+};
+
+export const handelAddArchiveConversation = async (
+  conversationID: string
+): Promise<any> => {
+  return await HttpClient.post(`/conversation/add-archive/${conversationID}`);
+};
+
+export const handelRemoveArchiveConversation = async (
+  conversationID: string
+): Promise<any> => {
+  return await HttpClient.post(`/conversation/add-archive/${conversationID}`);
+};
+
+export const handelAddCloseConversation = async (payload: {
+  conversationId: string;
+  userId: string;
+  close_at: Date;
+}): Promise<any> => {
+  return await HttpClient.post(`/conversation/close-conversation`, payload);
 };

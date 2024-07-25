@@ -15,8 +15,8 @@ export default function DashboardLayout({
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <Sidebar />
-      <div className="flex flex-col">
-        <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
+      <div className="flex flex-col ">
+        <header className="flex h-14 lg:h-[60px] dark:bg-gray-900 items-center gap-4 border-b bg-gray-100/40 px-6">
           <Link className="lg:hidden" href="/">
             <FiHome className="h-6 w-6" />
             <span className="sr-only">Home</span>

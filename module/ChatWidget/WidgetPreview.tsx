@@ -93,7 +93,7 @@ const WidgetPreview = () => {
             </button>
           </div>
         </div>
-        <div className="message-box-body">
+        <div className="message-box-body dark:bg-gray-950">
           <div className="widget-chat-box">
             <div className="message-bubble message-bubble-right">
               <div className="bubble-thumbs"></div>

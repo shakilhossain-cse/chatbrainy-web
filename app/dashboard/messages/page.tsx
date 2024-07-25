@@ -1,32 +1,33 @@
 "use client";
-import { loadChatWidget } from "@/module/ChatWidget/chatWidgetSlice";
-import { getOwnChatWidget } from "@/module/ChatWidget/service/chat-widget.service";
 import MessageBox from "@/module/Messenger/MessageBox";
-import UserList from "@/module/Messenger/UserList";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { useEffect, useState } from "react";
+import Conversations from "@/module/Messenger/Conversations";
+import useMessage from "@/module/Messenger/hooks/useMessage";
 
 export default function MessagePage() {
-  const [widgetId, setWidgetId] = useState<string>("");
+  const {
+    messages,
+    handelSubmit,
+    isFetching,
+    ref,
+    chatWidgetId,
+    conversationId,
+  } = useMessage();
 
-  useEffect(() => {
-    getOwnChatWidget().then((data) => {
-      if (!data.id) return;
-      setWidgetId(data.id);
-    });
-  }, []);
-
-  const { visitorId } = useAppSelector((state) => state.messages);
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="col-span-1 overflow-y-scroll h-[32rem]">
-        {widgetId && <UserList widgetId={widgetId} />}
+        {chatWidgetId && <Conversations />}
       </div>
       <div className="col-span-2">
-        {!!visitorId ? (
-          <MessageBox />
+        {!!conversationId ? (
+          <MessageBox
+            messages={messages}
+            handelSubmit={handelSubmit}
+            isFetching={isFetching}
+            ref={ref}
+          />
         ) : (
-          <div className="message-box p-10" style={{ width: "100%" }}>
+          <div className="message-box p-10 dark:bg-gray-900" style={{ width: "100%" }}>
             Please select Visitor
           </div>
         )}

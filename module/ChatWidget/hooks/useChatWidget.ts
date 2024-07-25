@@ -19,7 +19,7 @@ const useChatWidget = () => {
   const mutation = useMutation({
     mutationFn: updateOwnChatWidget,
     onSuccess: (data) => {
-      // dispatch(loginUser(data.user));
+      dispatch(loadChatWidget(data));
     },
   });
   const formValues = useAppSelector((state) => state.chatWidget);
@@ -126,8 +126,8 @@ const useChatWidget = () => {
   };
 
   const handelChangeScriptModal = (data: boolean) => {
-    setIsOpenScript(data)
-  }
+    setIsOpenScript(data);
+  };
 
   return {
     isLoading,
@@ -137,7 +137,7 @@ const useChatWidget = () => {
     onFileChange,
     widgetId: formValues?.id,
     isOpenScript,
-    handelChangeScriptModal
+    handelChangeScriptModal,
   };
 };
 

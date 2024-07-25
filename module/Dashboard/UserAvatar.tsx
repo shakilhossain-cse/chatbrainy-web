@@ -1,27 +1,25 @@
 "use client";
 
-
 import { FiLogOut, FiUser } from "react-icons/fi";
 import Link from "next/link";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useLogout from "../Auth/hooks/useLogout";
-  
 
 interface Props {
   user?: any;
 }
 
 export default function UserAvatar({ user }: Props) {
-  const {handleLogout} = useLogout()
+  const { handleLogout } = useLogout();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -51,6 +49,12 @@ export default function UserAvatar({ user }: Props) {
           <Link href={`/dashboard`}>
             <FiUser className="mr-2 h-4 w-4" />
             <span>Dashborad</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link href={`/dashboard/setting`} className="flex">
+            <FiUser className="mr-2 h-4 w-4" />
+            <span>Setting</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleLogout}>
