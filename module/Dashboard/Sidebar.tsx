@@ -35,8 +35,8 @@ const sidebarLinks = [
     icon: FiFolder,
   },
   {
-    label: "Leads",
-    href: "dashboard/leads",
+    label: "Configure Domain",
+    href: "/dashboard/marketing/configure-domain",
     icon: FiStar,
   },
   {
